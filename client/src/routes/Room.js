@@ -11,6 +11,10 @@ const Room = (props) => {
     const senders = useRef([]);
 
     useEffect(() => {
+        callback()
+
+    }, []);
+    const callback=()=>{
         navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(stream => {
             userVideo.current.srcObject = stream;
             userStream.current = stream;
@@ -33,15 +37,14 @@ const Room = (props) => {
 
             socketRef.current.on("ice-candidate", handleNewICECandidateMsg);
         });
+    }
 
-    }, []);
-
-    function callUser(userID) {
+    const callUser=(userID)=> {
         peerRef.current = createPeer(userID);
         userStream.current.getTracks().forEach(track => senders.current.push(peerRef.current.addTrack(track, userStream.current)));
     }
 
-    function createPeer(userID) {
+    const createPeer=(userID)=> {
         const peer = new RTCPeerConnection({
             iceServers: [
                 {
@@ -62,7 +65,7 @@ const Room = (props) => {
         return peer;
     }
 
-    function handleNegotiationNeededEvent(userID) {
+    const handleNegotiationNeededEvent=(userID)=> {
         peerRef.current.createOffer().then(offer => {
             return peerRef.current.setLocalDescription(offer);
         }).then(() => {
@@ -75,7 +78,7 @@ const Room = (props) => {
         }).catch(e => console.log(e));
     }
 
-    function handleRecieveCall(incoming) {
+    const handleRecieveCall=(incoming)=> {
         peerRef.current = createPeer();
         const desc = new RTCSessionDescription(incoming.sdp);
         peerRef.current.setRemoteDescription(desc).then(() => {
@@ -94,12 +97,12 @@ const Room = (props) => {
         })
     }
 
-    function handleAnswer(message) {
+    const handleAnswer=(message)=> {
         const desc = new RTCSessionDescription(message.sdp);
         peerRef.current.setRemoteDescription(desc).catch(e => console.log(e));
     }
 
-    function handleICECandidateEvent(e) {
+    const handleICECandidateEvent=(e)=> {
         if (e.candidate) {
             const payload = {
                 target: otherUser.current,
@@ -109,14 +112,14 @@ const Room = (props) => {
         }
     }
 
-    function handleNewICECandidateMsg(incoming) {
+    const handleNewICECandidateMsg=(incoming)=> {
         const candidate = new RTCIceCandidate(incoming);
 
         peerRef.current.addIceCandidate(candidate)
             .catch(e => console.log(e));
     }
 
-    function handleTrackEvent(e) {
+    const handleTrackEvent=(e)=> {
         partnerVideo.current.srcObject = e.streams[0];
     };
 
