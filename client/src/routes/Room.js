@@ -102,7 +102,7 @@ const Room = (props) => {
 
             socketRef.current = io.connect("/");
             socketRef.current.emit("join room", props.match.params.roomID);
-            
+            console.log('room id',props.match.params.roomID);
 
             socketRef.current.on('other user', userID => {
                 callUser(userID);
@@ -121,7 +121,7 @@ const Room = (props) => {
             
         });
 
-    },[props.match.params.roomID] && []);
+    },props.match.params.roomID !=''?[props.match.params.roomID]:[]);
 
     const  shareScreen=() =>{
        
