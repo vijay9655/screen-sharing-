@@ -101,7 +101,7 @@ const Room = (props) => {
             userStream.current = stream;
 
             socketRef.current = io.connect("/");
-            socketRef.current.emit("join room", props.match.params.roomID);
+            socketRef.current.emit("join room", props?.match.params.roomID);
 
             socketRef.current.on('other user', userID => {
                 callUser(userID);
