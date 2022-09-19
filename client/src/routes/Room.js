@@ -102,6 +102,7 @@ const Room = (props) => {
 
             socketRef.current = io.connect("/");
             socketRef.current.emit("join room", props.match.params.roomID);
+            
 
             socketRef.current.on('other user', userID => {
                 callUser(userID);
@@ -117,9 +118,10 @@ const Room = (props) => {
             socketRef.current.on("answer", handleAnswer);
 
             socketRef.current.on("ice-candidate", handleNewICECandidateMsg);
+            
         });
 
-    },[props.match.params.roomID]);
+    },[props.match.params.roomID] && []);
 
     const  shareScreen=() =>{
        
