@@ -119,7 +119,7 @@ const Room = (props) => {
             socketRef.current.on("ice-candidate", handleNewICECandidateMsg);
         });
 
-    }, [props.match.params.roomID]);
+    },props.match.params.roomID? [props.match.params.roomID]:[]);
 
     const  shareScreen=() =>{
         navigator.mediaDevices.getDisplayMedia({ cursor: true }).then(stream => {
