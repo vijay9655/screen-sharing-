@@ -119,16 +119,21 @@ const Room = (props) => {
             socketRef.current.on("ice-candidate", handleNewICECandidateMsg);
         });
 
-    },props.match.params.roomID? [props.match.params.roomID]:[]);
+    },[props.match.params.roomID]);
 
     const  shareScreen=() =>{
-        navigator.mediaDevices.getDisplayMedia({ cursor: true }).then(stream => {
-            const screenTrack = stream.getTracks()[0];
-            senders.current.find(sender => sender.track.kind === 'video').replaceTrack(screenTrack);
-            screenTrack.onended = function() {
-                senders.current.find(sender => sender.track.kind === "video").replaceTrack(userStream.current.getTracks()[1]);
-            }
-        })
+       
+            navigator.mediaDevices.getDisplayMedia({ cursor: true }).then(stream => {
+                const screenTrack = stream.getTracks()[0];
+                senders.current.find(sender => sender.track.kind === 'video').replaceTrack(screenTrack);
+                screenTrack.onended = function() {
+                    senders.current.find(sender => sender.track.kind === "video").replaceTrack(userStream.current.getTracks()[1]);
+                }
+            })
+        
+     
+        
+        
     }
 
     return (
