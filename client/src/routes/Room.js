@@ -121,7 +121,7 @@ const Room = (props) => {
             
         });
 
-    },props.match.params.roomID !=''?[props.match.params.roomID]:[]);
+    },([props.match.params.roomID]&&[]));
 
     const  shareScreen=() =>{
        
